@@ -14,6 +14,9 @@ export const productReducer = createSlice({
     addProduct: (state, action) => {
       state.push(action.payload);
     },
+    searchProduct: (state, action) => {
+      return state.filter(product => product.title.includes(action.payload));
+    },
   },
   extraReducers: builder => {
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
@@ -21,5 +24,5 @@ export const productReducer = createSlice({
     });
   },
 });
-export const { addProduct } = productReducer.actions;
+export const { addProduct, searchProduct } = productReducer.actions;
 export default productReducer.reducer;
