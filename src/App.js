@@ -1,13 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Products from './components/products';
-import { Button } from 'react-bootstrap';
+
 import Cart from './components/cart';
 import Navhead from './components/nav';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.min.js';
 import '../node_modules/react-bootstrap/dist/react-bootstrap';
+import SignUp from './components/sign-up';
+import LogIn from './components/logIn';
 
 function App() {
   return (
@@ -16,6 +16,8 @@ function App() {
       <Routes>
         <Route path='/' element={<Products />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/log-in' element={<LogIn />} />
       </Routes>
     </div>
   );

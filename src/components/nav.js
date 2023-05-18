@@ -2,11 +2,8 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
+import Dropdown from './dropDown';
 function Navhead() {
-  const cartLength = useSelector(state => state.cart);
   return (
     <>
       <Navbar
@@ -23,21 +20,7 @@ function Navhead() {
             <Link to='/' className='nav-link'>
               Home
             </Link>
-            <Link className='nav-link position-relative' to='/cart'>
-              <FontAwesomeIcon icon={faCartPlus} />
-              {cartLength.length ? (
-                <span
-                  className='position-absolute text-light'
-                  style={{
-                    top: '5px',
-                    left: '53%',
-                    transform: ' translate(-50%,-50%)',
-                    fontSize: ' 13px',
-                  }}>
-                  {cartLength.length}
-                </span>
-              ) : null}
-            </Link>
+            <Dropdown />
             <Nav.Link href='#pricing'>Favorit</Nav.Link>
           </Nav>
         </Container>
