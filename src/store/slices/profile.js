@@ -5,9 +5,14 @@ export const profileReducer = createSlice({
   initialState: [],
   reducers: {
     logIn: (state, action) => {
-      state.push(action.payload);
+        state.push(action.payload);
+        console.log(action.payload);
     },
+    logOut: (state, action) => {
+      state.pop()
+
+  },
   },
 });
-export const { logIn } = profileReducer.actions;
+export const { logIn,  logOut } = profileReducer.actions;
 export default profileReducer.reducer;

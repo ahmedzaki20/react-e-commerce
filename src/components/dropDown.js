@@ -10,9 +10,11 @@ function Dropdown() {
       <div
         className='collapse navbar-collapse position-relative'
         id='navbarNavDarkDropdown'>
+        
         {cartLength.length ? (
           <span
             className='position-absolute text-light'
+          
             style={{
               top: '-11%',
               left: '19%',
@@ -47,6 +49,7 @@ function Dropdown() {
                   <li>
                     <a
                       className='dropdown-item d-flex justify-content-between'
+                      key={product.id}
                       style={{ fontSize: '10px' }}
                       href='#'>
                       <span>{product.title.slice(0, 20)}... </span>

@@ -1,27 +1,35 @@
 import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-
 import Form from 'react-bootstrap/Form';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { logIn } from '../store/slices/profile';
+import { useNavigate } from 'react-router-dom';
 
 function LogIn() {
   const sign = useSelector(state => state.signUp);
+  const navigate=useNavigate()
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState();
+  const dispatch=useDispatch()
   useEffect(() => {
     console.log(sign);
   }, []);
   const handler = () => {
-    console.log(userName);
-    console.log(password);
+
     if (sign.some(profile => profile.email == userName)) {
       console.log(userName);
       if (
         sign.find(profile => profile.email == userName).password == password
       ) {
-        console.log('matches');
+        const user=sign.find(profile => profile.email == userName)
+        const profile={email:user.email,password:user.password,name:user.username}
+      
+        dispatch(logIn(profile))
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
       }
     }
   };
