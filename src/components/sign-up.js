@@ -8,12 +8,23 @@ import { basiceShema } from '../schem/schem';
 import { useDispatch } from 'react-redux';
 import { signUp } from '../store/slices/signUpslice';
 import { useNavigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2'
 function SignUp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const signUpAlert=()=>{
+    Swal.fire({
+      icon: 'success',
+      title: `Welcome ${values. username}`,
+      text: 'You sgin up to shopping cart app',
+      
+    })
+  }
+  // submiting sign up 
   const onSubmit = (values, actions) => {
     dispatch(signUp(values));
+    signUpAlert()
     setTimeout(() => {
       actions.resetForm();
       navigate('/log-in');

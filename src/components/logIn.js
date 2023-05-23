@@ -5,7 +5,8 @@ import Form from 'react-bootstrap/Form';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { logIn } from '../store/slices/profile';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 function LogIn() {
   const sign = useSelector(state => state.signUp);
@@ -16,6 +17,31 @@ function LogIn() {
   useEffect(() => {
     console.log(sign);
   }, []);
+  // handel sgin in alets
+  const signInAlert=(name)=>{
+    Swal.fire({
+      icon: 'success',
+      title: `Welcome ${name}`,
+      text: 'You sgin in to shopping cart app',
+      
+    })
+  }
+  const wrongEmail=(name)=>{
+    Swal.fire({
+      icon: 'error',
+      title: `Wrong Email`,
+      text: 'Make sure that you use the same email you sign up with',
+      
+    })
+  }
+  const wrongPassword=(name)=>{
+    Swal.fire({
+      icon: 'error',
+      title: `Wrong password`,
+      text: 'Make sure that you are not useing Caps or wrong password',
+      
+    })
+  }
   const handler = () => {
 
     if (sign.some(profile => profile.email == userName)) {
@@ -25,13 +51,15 @@ function LogIn() {
       ) {
         const user=sign.find(profile => profile.email == userName)
         const profile={email:user.email,password:user.password,name:user.username}
-      
+        signInAlert(profile.name)
         dispatch(logIn(profile))
         setTimeout(() => {
           navigate('/');
         }, 1000);
       }
+      else {wrongPassword()}
     }
+    else {wrongEmail()}
   };
 
   return (
@@ -46,11 +74,7 @@ function LogIn() {
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type='email'
-            //   value={values.email}
-            //   onChange={handleChange}
-            //   onBlur={handleBlur}
-            //   placeholder='Enter your email'
-            //   isInvalid={touched.email && errors.email}
+           
             onChange={e => {
               setUserName(e.target.value);
             }}
@@ -58,27 +82,24 @@ function LogIn() {
           <Form.Text className='text-muted'>
             We'll never share your email with anyone else.
           </Form.Text>
-          <Form.Control.Feedback type='invalid'>
-            {/* {errors.email} */}
-          </Form.Control.Feedback>
+         
         </Form.Group>
         <Form.Group className='mb-3' controlId='password'>
           <Form.Label>Password</Form.Label>
           <Form.Control
             type='password'
             placeholder='Password'
-            //   value={values.password}
-            //   onChange={handleChange}
-            //   onBlur={handleBlur}
-            //   isInvalid={touched.password && errors.password}
+        
             onChange={e => {
               setPassword(e.target.value);
             }}
           />
           <Form.Control.Feedback type='invalid'>
-            {/* {errors.password} */}
           </Form.Control.Feedback>
         </Form.Group>
+        <Form.Text className='link'>
+<Link to="/sign-up">Dont have an account </Link>
+            </Form.Text>
         <Button
           variant='primary'
           className='d-block m-auto'

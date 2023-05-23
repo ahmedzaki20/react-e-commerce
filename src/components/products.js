@@ -11,12 +11,19 @@ import { addToFav } from '../store/slices/addToFav';
 import { InputGroup } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { SpinnerRoundOutlined } from 'spinners-react';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom';
+
+
 
 function Products(props) {
   const dipatch = useDispatch();
+  const profile=useSelector((state)=>state.profile)
   let products = useSelector(state => state.products);
   const fav = useSelector(state => state.fav);
   const cart = useSelector(state => state.cart);
+  const navigate=useNavigate()
   const [productUi, setProductUi] = useState([]);
   const searchUi = value => {
     setProductUi(products);
@@ -32,6 +39,20 @@ function Products(props) {
   useEffect(() => {
     setProductUi(products);
   }, [products]);
+  const sweetalertSign=()=>{
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Sgin in first',
+      footer:  ""
+    })
+  }
+  const signInFirst=()=>{
+    sweetalertSign()
+   setTimeout(()=>{
+    navigate("/log-in")
+   },1000)
+  }
   return (
     <>
       <Container className='pt-5'>
@@ -63,10 +84,10 @@ function Products(props) {
                       <Card.Title>{product.title}</Card.Title>
                       <Card.Text>{product.price}$</Card.Text>
                       <div className='d-flex  justify-content-between'>
-                        <Button
+                    <Button
                           className='me-auto'
                           variant='success'
-                          onClick={() => dipatch(addToCart(product))}>
+                          onClick={() => profile.length?dipatch(addToCart(product)):signInFirst()}>
                           Add to cart
                         </Button>
                         <div
