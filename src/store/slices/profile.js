@@ -5,14 +5,15 @@ export const profileReducer = createSlice({
   initialState: [],
   reducers: {
     logIn: (state, action) => {
-        state.push(action.payload);
-        console.log(action.payload);
+      state.push(action.payload);
+    },
+    updateProfInfo: (state, action) => {
+      return [action.payload];
     },
     logOut: (state, action) => {
-      state.pop()
-
-  },
+      state.pop();
+    },
   },
 });
-export const { logIn,  logOut } = profileReducer.actions;
+export const { logIn, logOut, updateProfInfo } = profileReducer.actions;
 export default profileReducer.reducer;

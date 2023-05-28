@@ -8,7 +8,7 @@ function Dropdown() {
   return (
     <>
       <div
-        className='collapse navbar-collapse position-relative'
+        className='navbar-collapse position-relative'
         id='navbarNavDarkDropdown'>
         
         {cartLength.length ? (

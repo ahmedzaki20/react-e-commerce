@@ -47,8 +47,8 @@ function Cart() {
               <th>#</th>
               <th>Title</th>
               <th>Price</th>
-              <th>Option</th>
               <th>Quantity</th>
+              <th>Option</th>
             </tr>
           </thead>
           <tbody>

@@ -8,6 +8,7 @@ import '../node_modules/bootstrap/dist/js/bootstrap.min.js';
 import '../node_modules/react-bootstrap/dist/react-bootstrap';
 import SignUp from './components/sign-up';
 import LogIn from './components/logIn';
+import User from './components/user';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Products />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/:userName' element={<User />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/log-in' element={<LogIn />} />
       </Routes>
