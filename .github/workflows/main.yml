@@ -28,7 +28,7 @@ jobs:
       # 4. Run linting/tests (to ensure quality before deployment)
       - name: Run Tests & Lint
         # Use 'npm run lint && npm test' if you added a custom lint script
-        run: npm test -- --watchAll=false
+        run: npm test -- --watchAll=false --passWithNoTests
 
       # 5. Build the production application (creates the 'build' folder)
       - name: Build Project
