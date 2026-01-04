@@ -50,16 +50,20 @@ function Navhead() {
                   </Link>
                   <Dropdown />
                   <Nav.Link href="#pricing">Favorit</Nav.Link>
-                  <a
-                    role="button"
+                  <button
                     className="nav-link"
+                    style={{
+                      border: "none",
+                      background: "none",
+                      cursor: "pointer",
+                    }}
                     onClick={() => {
                       dispatch(logOut());
                       navigate("/");
                     }}
                   >
                     sign out
-                  </a>
+                  </button>
                 </>
               ) : (
                 <>

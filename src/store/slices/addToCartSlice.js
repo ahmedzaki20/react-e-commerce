@@ -1,11 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const cartReducer = createSlice({
-  name: 'cartReducer ',
+  name: "cartReducer ",
   initialState: [],
   reducers: {
     addToCart: (state, action) => {
-      const findItem = state.find(product => product.id === action.payload.id);
+      const findItem = state.find(
+        (product) => product.id === action.payload.id
+      );
 
       if (findItem) {
         findItem.qty++;
@@ -15,7 +17,7 @@ export const cartReducer = createSlice({
       }
     },
     removeCart: (state, action) => {
-      return state.filter(product => product.id != action.payload.id);
+      return state.filter((product) => product.id !== action.payload.id);
     },
     clearCart: (state, action) => {
       return [];

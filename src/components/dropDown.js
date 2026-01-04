@@ -1,68 +1,68 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function Dropdown() {
-  const cartLength = useSelector(state => state.cart);
+  const cartLength = useSelector((state) => state.cart);
   return (
     <>
       <div
-        className='navbar-collapse position-relative'
-        id='navbarNavDarkDropdown'>
-        
+        className="navbar-collapse position-relative"
+        id="navbarNavDarkDropdown"
+      >
         {cartLength.length ? (
           <span
-            className='position-absolute text-light'
-          
+            className="position-absolute text-light"
             style={{
-              top: '-11%',
-              left: '19%',
-              transform: ' translate(0%,0%)',
-              fontSize: ' 13px',
-              display: 'block',
-            }}>
+              top: "-11%",
+              left: "19%",
+              transform: " translate(0%,0%)",
+              fontSize: " 13px",
+              display: "block",
+            }}
+          >
             {cartLength.length}
           </span>
         ) : null}
-        <ul className='navbar-nav'>
-          <li className='nav-item dropdown'>
-            <a
-              className='text-light dropdown-toggle'
-              role='button'
-              data-bs-toggle='dropdown'
-              aria-expanded='false'>
+        <ul className="navbar-nav">
+          <li className="nav-item dropdown">
+            <button
+              className="text-light dropdown-toggle btn btn-link"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style={{ border: "none", background: "none" }}
+            >
               <FontAwesomeIcon icon={faCartPlus} />
-            </a>
-            <ul className='dropdown-menu dropdown-menu-dark'>
+            </button>
+            <ul className="dropdown-menu dropdown-menu-dark">
               <li>
-                <a
-                  className='dropdown-item d-flex justify-content-between'
-                  style={{ fontSize: '10px' }}
-                  href='#'>
+                <div
+                  className="dropdown-item d-flex justify-content-between"
+                  style={{ fontSize: "10px" }}
+                >
                   <span>Name</span>
                   <span>Quantity</span>
-                </a>
+                </div>
               </li>
-              {cartLength.map(product => {
+              {cartLength.map((product) => {
                 return (
-                  <li>
-                    <a
-                      className='dropdown-item d-flex justify-content-between'
-                      key={product.id}
-                      style={{ fontSize: '10px' }}
-                      href='#'>
+                  <li key={product.id}>
+                    <div
+                      className="dropdown-item d-flex justify-content-between"
+                      style={{ fontSize: "10px" }}
+                    >
                       <span>{product.title.slice(0, 20)}... </span>
                       <span>{product.qty}</span>
-                    </a>
+                    </div>
                   </li>
                 );
               })}
               <li>
-                <hr className='dropdown-divider' />
+                <hr className="dropdown-divider" />
               </li>
               <li>
-                <Link className='dropdown-item' to='/cart'>
+                <Link className="dropdown-item" to="/cart">
                   View All
                 </Link>
               </li>
