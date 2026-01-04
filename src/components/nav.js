@@ -24,7 +24,7 @@ function Navhead() {
       >
         <Container>
           <Link className="navbar-brand" to="/">
-            Shopping App
+            Zaki App
           </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
