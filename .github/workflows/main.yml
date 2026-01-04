@@ -3,29 +3,47 @@ name: Deploy to Surge
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      # 1. Pull the code from your repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # 2. Set up the Node.js environment (using v22 for 2026)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
 
+      # 3. Install dependencies cleanly
       - name: Install Dependencies
         run: npm ci
 
+      # 4. Run linting/tests (to ensure quality before deployment)
+      - name: Run Tests & Lint
+        # Use 'npm run lint && npm test' if you added a custom lint script
+        run: npm test -- --watchAll=false
+
+      # 5. Build the production application (creates the 'build' folder)
       - name: Build Project
         run: npm run build
 
+      # 6. CRITICAL FIX for React Router 404s on Surge
+      - name: Create 200.html fallback
+        run: cp build/index.html build/200.html
+
+      # 7. Install the Surge CLI tool in the GitHub environment
       - name: Install Surge CLI
         run: npm install -g surge
 
+      # 8. Deploy the 'build' folder using stored secrets
       - name: Deploy to Surge
-        # Replace 'build' with 'dist' if you are using Vite
         run: surge ./build ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+        # Only deploy when the event is a 'push' to main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
