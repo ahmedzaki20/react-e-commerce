@@ -37,6 +37,9 @@ jobs:
       # 6. CRITICAL FIX for React Router 404s on Surge
       - name: Create 200.html fallback
         run: cp build/index.html build/200.html
+              # 6. CRITICAL FIX for React Router 404s on Surge
+      - name: test env 
+        run: echo "$env.Greeting $env.First_Name. Today is $env.DAY_OF_WEEK!"
 
       # 7. Install the Surge CLI tool in the GitHub environment
       - name: Install Surge CLI
