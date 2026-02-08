@@ -1,4 +1,4 @@
-name: Deploy to Surge
+name: CI/CD - Build, Registry, and Deploy
 
 on:
   push:
@@ -6,47 +6,81 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  packages: write
+  contents: read
+
 jobs:
-  build-and-deploy:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-      # 1. Pull the code from your repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2. Set up the Node.js environment (using v22 for 2026)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
 
-      # 3. Install dependencies cleanly
       - name: Install Dependencies
         run: npm ci
 
-      # 4. Run linting/tests (to ensure quality before deployment)
-      - name: Run Tests & Lint
-        # Use 'npm run lint && npm test' if you added a custom lint script
+      - name: Run Linter
+        run: npm run lint 
+
+      - name: Run Tests
         run: npm test -- --watchAll=false --passWithNoTests
 
-      # 5. Build the production application (creates the 'build' folder)
       - name: Build Project
         run: npm run build
 
-      # 6. CRITICAL FIX for React Router 404s on Surge
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: build/
+
+  # NEW JOB: Store the build in the Registry
+  push-to-registry:
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: [docker/login-action](https://github.com)@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: [docker/build-push-action](https://github.com)@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+  deploy:
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: production-build
+          path: build/
+
       - name: Create 200.html fallback
         run: cp build/index.html build/200.html
-              # 6. CRITICAL FIX for React Router 404s on Surge
-      - name: test env 
-        run: echo "${{ vars.Greeting }} ${{vars.First_Name}}. Today is ${{vars.DAY_OF_WEEK}} !"
 
-      # 7. Install the Surge CLI tool in the GitHub environment
-      - name: Install Surge CLI
-        run: npm install -g surge
-
-      # 8. Deploy the 'build' folder using stored secrets
       - name: Deploy to Surge
-        run: surge ./build ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
-        # Only deploy when the event is a 'push' to main
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          npm install -g surge
+          surge ./build ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
